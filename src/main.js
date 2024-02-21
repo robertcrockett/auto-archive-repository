@@ -7,7 +7,7 @@ const { wait } = require('./wait')
  */
 async function run() {
   try {
-    // Obtain te inputs defined in the metadata file
+    // Obtain the inputs defined in the metadata file
     const ms = core.getInput('milliseconds', { required: true })
     const github_pat_token = core.getInput('github_org_pat_token', {
       required: true
@@ -22,6 +22,7 @@ async function run() {
     if (!validate_token(github_pat_token)) {
       throw new Error('github_pat_token not in a valid format')
     }
+    // Validate that the inactive_days variable is a number
     if (isNaN(inactive_days)) {
       throw new Error('github_repo_max_inactive_days not a number')
     }
@@ -47,14 +48,14 @@ async function run() {
 }
 
 /**
- * Validate a personal access token
+ * Validate the formatting of a GitHub personal access token
  *
  * @param {github_pat_token} The GitHub Personal Access Token to validate
  * @returns boolean indicating if the token is valid
  */
 function validate_token(github_pat_token) {
   // A regular expression that starts with ghp_, is alphanumeric with NO special characters and is exactly 40 characters long
-  const pat_regex = /^ghp_[a-zA-z0-9]{36}$/
+  const pat_regex = /^ghp_[a-zA-Z0-9]{36}$/
 
   if (github_pat_token.match(pat_regex)) {
     return true
