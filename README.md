@@ -1,37 +1,19 @@
-# Create a JavaScript Action
+# auto-archive-repository
+
+Automatically archive inactive repositories within an Organization
+
+This GitHub Action will automatically archive repositories that are no longer
+maintained within an Organization. The set of criteria that determines
+maintability is configurable based on the needs of the organization.
 
 [![GitHub Super-Linter](https://github.com/actions/javascript-action/actions/workflows/linter.yml/badge.svg)](https://github.com/super-linter/super-linter)
 ![CI](https://github.com/actions/javascript-action/actions/workflows/ci.yml/badge.svg)
 
-Use this template to bootstrap the creation of a JavaScript action. :rocket:
-
-This template includes compilation support, tests, a validation workflow,
-publishing, and versioning guidance.
-
-If you are new, there's also a simpler introduction in the
-[Hello world JavaScript action repository](https://github.com/actions/hello-world-javascript-action).
-
-## Create Your Own Action
-
-To create your own action, you can use this repository as a template! Just
-follow the below instructions:
-
-1. Click the **Use this template** button at the top of the repository
-1. Select **Create a new repository**
-1. Select an owner and name for your new repository
-1. Click **Create repository**
-1. Clone your new repository
-
-> [!IMPORTANT]
->
-> Make sure to remove or update the [`CODEOWNERS`](./CODEOWNERS) file! For
-> details on how to use this file, see
-> [About code owners](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners).
-
 ## Initial Setup
 
 After you've cloned the repository to your local machine or codespace, you'll
-need to perform some initial setup steps before you can develop your action.
+need to perform some initial setup steps before you can continue development of
+the action.
 
 > [!NOTE]
 >
@@ -67,52 +49,19 @@ need to perform some initial setup steps before you can develop your action.
    ...
    ```
 
-## Update the Action Metadata
+## Updating the code
 
-The [`action.yml`](action.yml) file defines metadata about your action, such as
-input(s) and output(s). For details about this file, see
-[Metadata syntax for GitHub Actions](https://docs.github.com/en/actions/creating-actions/metadata-syntax-for-github-actions).
-
-When you copy this repository, update `action.yml` with the name, description,
-inputs, and outputs for your action.
-
-## Update the Action Code
-
-The [`src/`](./src/) directory is the heart of your action! This contains the
-source code that will be run when your action is invoked. You can replace the
-contents of this directory with your own code.
-
-There are a few things to keep in mind when writing your action code:
-
-- Most GitHub Actions toolkit and CI/CD operations are processed asynchronously.
-  In `main.js`, you will see that the action is run in an `async` function.
-
-  ```javascript
-  const core = require('@actions/core')
-  //...
-
-  async function run() {
-    try {
-      //...
-    } catch (error) {
-      core.setFailed(error.message)
-    }
-  }
-  ```
-
-  For more information about the GitHub Actions toolkit, see the
-  [documentation](https://github.com/actions/toolkit/blob/master/README.md).
-
-So, what are you waiting for? Go ahead and start customizing your action!
+Once the initial setup is complete, checkout a new branch, update the action,
+tests and build!
 
 1. Create a new branch
 
    ```bash
-   git checkout -b releases/v1
+   git checkout -b feature/new_feature
    ```
 
-1. Replace the contents of `src/` with your action code
-1. Add tests to `__tests__/` for your source code
+1. Update the contents of `src/` with modified action code
+1. Add tests to `__tests__/` for your new source code
 1. Format, test, and build the action
 
    ```bash
@@ -132,13 +81,13 @@ So, what are you waiting for? Go ahead and start customizing your action!
 
    ```bash
    git add .
-   git commit -m "My first action is ready!"
+   git commit -m "New feature for the auto-archive-repository action."
    ```
 
 1. Push them to your repository
 
    ```bash
-   git push -u origin releases/v1
+   git push -u origin feature/new_feature
    ```
 
 1. Create a pull request and get feedback on your action
