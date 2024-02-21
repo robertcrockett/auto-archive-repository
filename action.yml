@@ -1,6 +1,8 @@
-name: 'The name of your action here'
-description: 'Provide a description here'
-author: 'Your name or organization here'
+name: 'auto-archive-repository'
+description:
+  'A GitHub Action that can be used to automatically archive inactive
+  repositories within an Organization'
+author: 'Optum - Robert Crockett'
 
 # Define your inputs here.
 inputs:
@@ -8,6 +10,23 @@ inputs:
     description: 'Your input description here'
     required: true
     default: '1000'
+  github_org_pat_token:
+    description:
+      'A personal access token with the necessary permissions to archive
+      repositories within the organization'
+    required: true
+  github_org_name:
+    description: 'The name of the organization to archive repositories within'
+    required: true
+  github_repo_name:
+    description: 'The name of the repository to archive'
+    required: true
+  github_repo_max_inactive_days:
+    description:
+      'The maximum number of days a repository can be inactive before it is
+      archived'
+    required: true
+    default: '730'
 
 # Define your outputs here.
 outputs:

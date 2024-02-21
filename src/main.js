@@ -7,9 +7,30 @@ const { wait } = require('./wait')
  */
 async function run() {
   try {
+    // Obtain te inputs defined in the metadata file
     const ms = core.getInput('milliseconds', { required: true })
+    const github_pat_token = core.getInput('github_org_pat_token', {
+      required: true
+    })
+    const github_org = core.getInput('github_org', { required: true })
+    const github_repo = core.getInput('github_repo', { required: true })
+    const inactive_days = core.getInput('github_repo_max_inactive_days', {
+      required: true
+    })
+
+    // Validate the github_pat_token
+    if (!validate_token(github_pat_token)) {
+      throw new Error('github_pat_token not in a valid format')
+    }
+    if (isNaN(inactive_days)) {
+      throw new Error('github_repo_max_inactive_days not a number')
+    }
 
     // Debug logs are only output if the `ACTIONS_STEP_DEBUG` secret is true
+    core.debug(`github_pat_token: ${github_pat_token}`)
+    core.debug(`github_org: ${github_org}`)
+    core.debug(`github_repo: ${github_repo}`)
+    core.debug(`inactive_days: ${inactive_days}`)
     core.debug(`Waiting ${ms} milliseconds ...`)
 
     // Log the current timestamp, wait, then log the new timestamp
@@ -22,6 +43,26 @@ async function run() {
   } catch (error) {
     // Fail the workflow run if an error occurs
     core.setFailed(error.message)
+  }
+}
+
+/**
+ * Validate a personal access token
+ *
+ * @param {github_pat_token} The GitHub Personal Access Token to validate
+ * @returns boolean indicating if the token is valid
+ */
+function validate_token(github_pat_token) {
+  const pat_prefix = 'ghp_'
+  const pat_length = 40
+
+  if (
+    github_pat_token.startsWith(pat_prefix) &&
+    github_pat_token.length === pat_length
+  ) {
+    return true
+  } else {
+    return false
   }
 }
 
