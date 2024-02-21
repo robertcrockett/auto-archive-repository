@@ -53,13 +53,10 @@ async function run() {
  * @returns boolean indicating if the token is valid
  */
 function validate_token(github_pat_token) {
-  const pat_prefix = 'ghp_'
-  const pat_length = 40
+  // A regular expression that starts with ghp_, is alphanumeric with NO special characters and is exactly 40 characters long
+  const pat_regex = /^ghp_[a-zA-z0-9]{36}$/
 
-  if (
-    github_pat_token.startsWith(pat_prefix) &&
-    github_pat_token.length === pat_length
-  ) {
+  if (github_pat_token.match(pat_regex)) {
     return true
   } else {
     return false
