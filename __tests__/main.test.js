@@ -84,6 +84,93 @@ describe('action', () => {
     )
   })
 
+  it('sets a failed status if pat token does not start with ghp_', async () => {
+    // Set the action's inputs as return values from core.getInput()
+    getInputMock.mockImplementation(name => {
+      switch (name) {
+        case 'milliseconds':
+          return '500'
+        case 'github_org_pat_token':
+          return '1111111111111111111111111111111111111111'
+        case 'github_org':
+          return 'robertcrockett'
+        case 'github_repo':
+          return 'archive_test'
+        case 'github_repo_max_inactive_days':
+          return '365'
+        default:
+          return ''
+      }
+    })
+
+    await main.run()
+    expect(runMock).toHaveReturned()
+
+    // Verify that all of the core library functions were called correctly
+    expect(setFailedMock).toHaveBeenNthCalledWith(
+      1,
+      'github_pat_token not in a valid format'
+    )
+  })
+
+  it('sets a failed status if pat token contains special characters', async () => {
+    // Set the action's inputs as return values from core.getInput()
+    getInputMock.mockImplementation(name => {
+      switch (name) {
+        case 'milliseconds':
+          return '500'
+        case 'github_org_pat_token':
+          return 'ghp_1111111111111_1111111[11111111111111'
+        case 'github_org':
+          return 'robertcrockett'
+        case 'github_repo':
+          return 'archive_test'
+        case 'github_repo_max_inactive_days':
+          return '365'
+        default:
+          return ''
+      }
+    })
+
+    await main.run()
+    expect(runMock).toHaveReturned()
+
+    // Verify that all of the core library functions were called correctly
+    expect(setFailedMock).toHaveBeenNthCalledWith(
+      1,
+      'github_pat_token not in a valid format'
+    )
+  })
+
+  it('sets a failed status if pat token is too short', async () => {
+    // Set the action's inputs as return values from core.getInput()
+    getInputMock.mockImplementation(name => {
+      switch (name) {
+        case 'milliseconds':
+          return '500'
+        case 'github_org_pat_token':
+          return 'ghp_1111too_short'
+        case 'github_org':
+          return 'robertcrockett'
+        case 'github_repo':
+          return 'archive_test'
+        case 'github_repo_max_inactive_days':
+          return '365'
+        default:
+          return ''
+      }
+    })
+
+    await main.run()
+    expect(runMock).toHaveReturned()
+
+    // Verify that all of the core library functions were called correctly
+    expect(setFailedMock).toHaveBeenNthCalledWith(
+      1,
+      'github_pat_token not in a valid format'
+    )
+  })
+
   it('fails if no github org input is provided', async () => {
     // Set the action's inputs as return values from core.getInput()
     getInputMock.mockImplementation(name => {
@@ -199,35 +286,6 @@ describe('action', () => {
     expect(setFailedMock).toHaveBeenNthCalledWith(
       1,
       'github_repo_max_inactive_days not a number'
-    )
-  })
-
-  it('sets a failed status if pat token is not in a valid format', async () => {
-    // Set the action's inputs as return values from core.getInput()
-    getInputMock.mockImplementation(name => {
-      switch (name) {
-        case 'milliseconds':
-          return '500'
-        case 'github_org_pat_token':
-          return 'ghp_1111too_short'
-        case 'github_org':
-          return 'robertcrockett'
-        case 'github_repo':
-          return 'archive_test'
-        case 'github_repo_max_inactive_days':
-          return 'this is not a number'
-        default:
-          return ''
-      }
-    })
-
-    await main.run()
-    expect(runMock).toHaveReturned()
-
-    // Verify that all of the core library functions were called correctly
-    expect(setFailedMock).toHaveBeenNthCalledWith(
-      1,
-      'github_pat_token not in a valid format'
     )
   })
 
