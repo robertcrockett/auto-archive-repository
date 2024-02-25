@@ -17,10 +17,15 @@ async function run() {
     const inactive_days = core.getInput('github_repo_max_inactive_days', {
       required: true
     })
+    const ignore_files = core.getInput('ignore_files', { required: false })
+    const readme_message = core.getInput('readme_message', { required: false })
 
     // Validate the github_pat_token
-    if (!validate_token(github_pat_token)) {
-      throw new Error('github_pat_token not in a valid format')
+    try {
+      validate_token(github_pat_token)
+    } catch (error) {
+      console.log('Error validating PAT token: ', error.message)
+      throw error
     }
     // Validate that the inactive_days variable is a number
     if (isNaN(inactive_days)) {
@@ -32,6 +37,8 @@ async function run() {
     core.debug(`github_org: ${github_org}`)
     core.debug(`github_repo: ${github_repo}`)
     core.debug(`inactive_days: ${inactive_days}`)
+    core.debug(`ignore_files: ${ignore_files}`)
+    core.debug(`readme_message: ${readme_message}`)
     core.debug(`Waiting ${ms} milliseconds ...`)
 
     // Log the current timestamp, wait, then log the new timestamp
@@ -56,11 +63,17 @@ async function run() {
 function validate_token(github_pat_token) {
   // A regular expression that starts with ghp_, is alphanumeric with NO special characters and is exactly 40 characters long
   const pat_regex = /^ghp_[a-zA-Z0-9]{36}$/
+  const pat_length = 40
+  const pat_start = 'ghp_'
 
-  if (github_pat_token.match(pat_regex)) {
-    return true
+  if (github_pat_token.length !== pat_length) {
+    throw new Error('github_pat_token not 40 characters long')
+  } else if (!github_pat_token.startsWith(pat_start)) {
+    throw new Error('github_pat_token does not start with ghp_')
+  } else if (!github_pat_token.match(pat_regex)) {
+    throw new Error('github_pat_token contains special characters')
   } else {
-    return false
+    return true
   }
 }
 

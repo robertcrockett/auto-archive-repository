@@ -27,6 +27,17 @@ inputs:
       archived'
     required: true
     default: '730'
+  ignore_files:
+    description:
+      'A list of files to ignore when determining if a repository is inactive'
+    required: false
+    default: '[]'
+  readme_message:
+    description:
+      'The message to add to the README.md file of the repository when it is
+      archived'
+    required: false
+    default: 'This repository has been archived due to inactivity. It will no longer be maintained moving forward.'
 
 # Define your outputs here.
 outputs:
