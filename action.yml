@@ -36,8 +36,8 @@ inputs:
       archived'
     required: false
     default:
-      'This repository has been archived due to inactivity. It will no longer be
-      maintained moving forward.'
+      '# This repository has been archived due to inactivity. It will no longer
+      be maintained moving forward.'
 
 # Define your outputs here.
 outputs:
