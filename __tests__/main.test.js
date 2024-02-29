@@ -25,8 +25,6 @@ describe('action', () => {
     // Set the action's inputs as return values from core.getInput()
     getInputMock.mockImplementation(name => {
       switch (name) {
-        case 'milliseconds':
-          return '500'
         case 'github_org_pat_token':
           return 'ghp_111111111111111111111111111111111111'
         case 'github_org':
@@ -57,8 +55,6 @@ describe('action', () => {
     // Set the action's inputs as return values from core.getInput()
     getInputMock.mockImplementation(name => {
       switch (name) {
-        case 'milliseconds':
-          return '500'
         case 'github_org_pat_token':
           throw new Error(
             'Input required and not supplied: github_org_pat_token'
@@ -88,8 +84,6 @@ describe('action', () => {
     // Set the action's inputs as return values from core.getInput()
     getInputMock.mockImplementation(name => {
       switch (name) {
-        case 'milliseconds':
-          return '500'
         case 'github_org_pat_token':
           return '1111111111111111111111111111111111111111'
         case 'github_org':
@@ -117,8 +111,6 @@ describe('action', () => {
     // Set the action's inputs as return values from core.getInput()
     getInputMock.mockImplementation(name => {
       switch (name) {
-        case 'milliseconds':
-          return '500'
         case 'github_org_pat_token':
           return 'ghp_1111111111111_1111111[11111111111111'
         case 'github_org':
@@ -146,8 +138,6 @@ describe('action', () => {
     // Set the action's inputs as return values from core.getInput()
     getInputMock.mockImplementation(name => {
       switch (name) {
-        case 'milliseconds':
-          return '500'
         case 'github_org_pat_token':
           return 'ghp_1111too_short'
         case 'github_org':
@@ -175,8 +165,6 @@ describe('action', () => {
     // Set the action's inputs as return values from core.getInput()
     getInputMock.mockImplementation(name => {
       switch (name) {
-        case 'milliseconds':
-          return '500'
         case 'github_org_pat_token':
           return 'ghp_111111111111111111111111111111111111'
         case 'github_org':
@@ -204,8 +192,6 @@ describe('action', () => {
     // Set the action's inputs as return values from core.getInput()
     getInputMock.mockImplementation(name => {
       switch (name) {
-        case 'milliseconds':
-          return '500'
         case 'github_org_pat_token':
           return 'ghp_111111111111111111111111111111111111'
         case 'github_org':
@@ -233,8 +219,6 @@ describe('action', () => {
     // Set the action's inputs as return values from core.getInput()
     getInputMock.mockImplementation(name => {
       switch (name) {
-        case 'milliseconds':
-          return '500'
         case 'github_org_pat_token':
           return 'ghp_111111111111111111111111111111111111'
         case 'github_org':
@@ -264,8 +248,6 @@ describe('action', () => {
     // Set the action's inputs as return values from core.getInput()
     getInputMock.mockImplementation(name => {
       switch (name) {
-        case 'milliseconds':
-          return '500'
         case 'github_org_pat_token':
           return 'ghp_111111111111111111111111111111111111'
         case 'github_org':
@@ -286,105 +268,6 @@ describe('action', () => {
     expect(setFailedMock).toHaveBeenNthCalledWith(
       1,
       'github_repo_max_inactive_days not a number'
-    )
-  })
-
-  it('sets the time output', async () => {
-    // Set the action's inputs as return values from core.getInput()
-    getInputMock.mockImplementation(name => {
-      switch (name) {
-        case 'milliseconds':
-          return '500'
-        case 'github_org_pat_token':
-          return 'ghp_111111111111111111111111111111111111'
-        case 'github_org':
-          return 'robertcrockett'
-        case 'github_repo':
-          return 'archive_test'
-        case 'github_repo_max_inactive_days':
-          return '365'
-        case 'ignore_files':
-          return 'README.md'
-        case 'readme_message':
-          return 'This is a test message'
-        default:
-          return ''
-      }
-    })
-
-    await main.run()
-    expect(runMock).toHaveReturned()
-
-    // Verify that all of the core library functions were called correctly
-    expect(debugMock).toHaveBeenNthCalledWith(
-      1,
-      'github_pat_token: ghp_111111111111111111111111111111111111'
-    )
-    expect(debugMock).toHaveBeenNthCalledWith(2, 'github_org: robertcrockett')
-    expect(debugMock).toHaveBeenNthCalledWith(3, 'github_repo: archive_test')
-    expect(debugMock).toHaveBeenNthCalledWith(4, 'inactive_days: 365')
-    expect(debugMock).toHaveBeenNthCalledWith(5, 'ignore_files: README.md')
-    expect(debugMock).toHaveBeenNthCalledWith(
-      6,
-      'readme_message: This is a test message'
-    )
-    expect(debugMock).toHaveBeenNthCalledWith(7, 'Waiting 500 milliseconds ...')
-    expect(debugMock).toHaveBeenNthCalledWith(
-      8,
-      expect.stringMatching(timeRegex)
-    )
-    expect(debugMock).toHaveBeenNthCalledWith(
-      9,
-      expect.stringMatching(timeRegex)
-    )
-    expect(setOutputMock).toHaveBeenNthCalledWith(
-      1,
-      'time',
-      expect.stringMatching(timeRegex)
-    )
-  })
-
-  it('sets a failed status if milliseconds is not a number', async () => {
-    // Set the action's inputs as return values from core.getInput()
-    getInputMock.mockImplementation(name => {
-      switch (name) {
-        case 'milliseconds':
-          return 'this is not a number'
-        case 'github_org_pat_token':
-          return 'ghp_111111111111111111111111111111111111'
-        default:
-          return ''
-      }
-    })
-
-    await main.run()
-    expect(runMock).toHaveReturned()
-
-    // Verify that all of the core library functions were called correctly
-    expect(setFailedMock).toHaveBeenNthCalledWith(
-      1,
-      'milliseconds not a number'
-    )
-  })
-
-  it('fails if no input is provided', async () => {
-    // Set the action's inputs as return values from core.getInput()
-    getInputMock.mockImplementation(name => {
-      switch (name) {
-        case 'milliseconds':
-          throw new Error('Input required and not supplied: milliseconds')
-        default:
-          return ''
-      }
-    })
-
-    await main.run()
-    expect(runMock).toHaveReturned()
-
-    // Verify that all of the core library functions were called correctly
-    expect(setFailedMock).toHaveBeenNthCalledWith(
-      1,
-      'Input required and not supplied: milliseconds'
     )
   })
 })

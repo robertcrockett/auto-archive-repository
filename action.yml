@@ -6,10 +6,6 @@ author: 'Optum - Robert Crockett'
 
 # Define your inputs here.
 inputs:
-  milliseconds:
-    description: 'Your input description here'
-    required: true
-    default: '1000'
   github_org_pat_token:
     description:
       'A personal access token with the necessary permissions to archive
@@ -31,13 +27,17 @@ inputs:
     description:
       'A list of files to ignore when determining if a repository is inactive'
     required: false
-    default: '[]'
+    default:
+      '[README.md, README.txt, CONTRIBUTORS.md, CONTRIBUTING.md, LICENSE,
+      LICENSE.md, LICENSE.txt, CODE_OF_CONDUCT.md, SECURITY.md]'
   readme_message:
     description:
       'The message to add to the README.md file of the repository when it is
       archived'
     required: false
-    default: 'This repository has been archived due to inactivity. It will no longer be maintained moving forward.'
+    default:
+      'This repository has been archived due to inactivity. It will no longer be
+      maintained moving forward.'
 
 # Define your outputs here.
 outputs:

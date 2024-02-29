@@ -55,7 +55,7 @@ jobs:
         id: test-action
         uses: ./
         with:
-          milliseconds: 1000
+          org: 'test'
 
       - name: Print Output
         id: output
