@@ -1,5 +1,4 @@
 const core = require('@actions/core')
-const { wait } = require('./wait')
 
 /**
  * The main function for the action.
@@ -8,7 +7,6 @@ const { wait } = require('./wait')
 async function run() {
   try {
     // Obtain the inputs defined in the metadata file
-    const ms = core.getInput('milliseconds', { required: true })
     const github_pat_token = core.getInput('github_org_pat_token', {
       required: true
     })
@@ -39,15 +37,6 @@ async function run() {
     core.debug(`inactive_days: ${inactive_days}`)
     core.debug(`ignore_files: ${ignore_files}`)
     core.debug(`readme_message: ${readme_message}`)
-    core.debug(`Waiting ${ms} milliseconds ...`)
-
-    // Log the current timestamp, wait, then log the new timestamp
-    core.debug(new Date().toTimeString())
-    await wait(parseInt(ms, 10))
-    core.debug(new Date().toTimeString())
-
-    // Set outputs for other workflow steps to use
-    core.setOutput('time', new Date().toTimeString())
   } catch (error) {
     // Fail the workflow run if an error occurs
     core.setFailed(error.message)
