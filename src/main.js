@@ -1,4 +1,5 @@
 const core = require('@actions/core')
+const { getFileSHA, downloadFile } = require('../src/archiving')
 
 /**
  * The main function for the action.
@@ -37,6 +38,25 @@ async function run() {
     core.debug(`inactive_days: ${inactive_days}`)
     core.debug(`ignore_files: ${ignore_files}`)
     core.debug(`readme_message: ${readme_message}`)
+
+    // Obtain the file sha from the repository
+    const file_sha = await getFileSHA(
+      github_org,
+      github_repo,
+      'README.md',
+      github_pat_token
+    )
+    // Download the file from the repository
+    const file_contents = await downloadFile(
+      github_org,
+      github_repo,
+      file_sha,
+      github_pat_token
+    )
+
+    const modified_file_contents = readme_message + github_pat_token
+
+    console.log('File contents: ', file_contents)
   } catch (error) {
     // Fail the workflow run if an error occurs
     core.setFailed(error.message)
