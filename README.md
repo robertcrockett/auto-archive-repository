@@ -95,9 +95,11 @@ tests and build!
 
 Your action is now published! :rocket:
 
+<!-- TODO: Document versioning process and remove below
+
 For information about versioning your action, see
 [Versioning](https://github.com/actions/toolkit/blob/master/docs/action-versioning.md)
-in the GitHub Actions toolkit.
+in the GitHub Actions toolkit. -->
 
 ## Validate the Action
 
