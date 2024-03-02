@@ -46,17 +46,17 @@ async function run() {
       'README.md',
       github_pat_token
     )
-    // Download the file from the repository
-    const file_contents = await downloadFile(
-      github_org,
-      github_repo,
-      file_sha,
-      github_pat_token
-    )
+    // // Download the file from the repository
+    // const file_contents = await downloadFile(
+    //   github_org,
+    //   github_repo,
+    //   file_sha,
+    //   github_pat_token
+    // )
 
-    const modified_file_contents = readme_message + github_pat_token
+    // const modified_file_contents = readme_message + github_pat_token
 
-    console.log('File contents: ', file_contents)
+    // console.log('File contents: ', file_contents)
   } catch (error) {
     // Fail the workflow run if an error occurs
     core.setFailed(error.message)
