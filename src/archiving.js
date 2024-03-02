@@ -4,6 +4,39 @@
 const { Octokit } = require('@octokit/rest')
 
 /**
+ * Returns the list of repositories for the specified organization.
+ *
+ * @param organization - The GitHub organization.
+ * @param token - The GitHub PAT token to use for the request.
+ * @returns A Promise representing the repositories in the GitHub organization.
+ *
+ */
+async function listRepositories(org, token) {
+  // Create a new instance of the GitHub API helper module octokit
+  const octokit = new Octokit({
+    // Set the authentication token for the request
+    auth: `${token}`
+  })
+
+  try {
+    // Asynchronous request to retrieve the list of repositories for the specified organization
+    const response = await octokit.request(`GET /orgs/${org}/repos`, {
+      // Include the preferred API version
+      headers: {
+        'X-GitHub-Api-Version': '2022-11-28'
+      }
+    })
+
+    // Return the list of repositories for the specified organization
+    return response.data
+  } catch (error) {
+    // Log an error that the organization cannot be found
+    console.log(`Cannot find organization.`)
+    throw new Error('Cannot find organization.')
+  }
+}
+
+/**
  * Returns the File SHA of the specified file path in the GitHub repository.
  *
  * @param owner - The owner of the GitHub repository to retrieve the file SHA from.
@@ -146,4 +179,9 @@ async function archiveRepository(owner, repo, token) {
   }
 }
 
-module.exports = { getFileSHA, downloadFile, archiveRepository }
+module.exports = {
+  listRepositories,
+  getFileSHA,
+  downloadFile,
+  archiveRepository
+}

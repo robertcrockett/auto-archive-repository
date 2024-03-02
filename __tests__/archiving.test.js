@@ -5,6 +5,7 @@ const { expect } = require('@jest/globals')
 const { createHmac } = require('node:crypto')
 const { Octokit } = require('@octokit/rest')
 const {
+  listRepositories,
   getFileSHA,
   downloadFile,
   archiveRepository
@@ -16,6 +17,32 @@ jest.mock('@octokit/rest')
 describe('archiving.js', () => {
   beforeEach(() => {
     jest.clearAllMocks()
+  })
+
+  it('Cannot find organization', async () => {
+    const organization = 'bogus_org'
+
+    // Mock up an error response
+    const errResponse = {
+      status: 404,
+      response: {
+        message: 'Cannot find organization.',
+        status: 404
+      }
+    }
+
+    // Reject the mocked up error response
+    const request = () =>
+      new Promise((resolve, reject) => {
+        reject(errResponse)
+      })
+
+    // Mock the Octokit module and return the mocked up error response
+    Octokit.mockImplementation(() => ({ request }))
+
+    await expect(listRepositories(organization)).rejects.toThrow(
+      'Cannot find organization.'
+    )
   })
 
   it('Cannot find repository', async () => {
